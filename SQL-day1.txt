@@ -1,0 +1,263 @@
+Connected to:
+Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+Version 18.4.0.0.0
+
+SQL> create table Salespeople (snum number,sname varchar2(20),city varchar2(20));
+
+Table created.
+
+SQL> desc salespeople;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNUM                                               NUMBER
+ SNAME                                              VARCHAR2(20)
+ CITY                                               VARCHAR2(20)
+
+SQL> insert into salespeople(&snum,&sname,&city);
+Enter value for snum: 1001
+Enter value for sname: Peel
+Enter value for city: London
+old   1: insert into salespeople(&snum,&sname,&city)
+new   1: insert into salespeople(1001,Peel,London)
+insert into salespeople(1001,Peel,London)
+                        *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> select * from salespeople;
+
+no rows selected
+
+SQL> insert into salespeople values(&snum,&sname,&city);
+Enter value for snum: 101
+Enter value for sname: Peel
+Enter value for city: London
+old   1: insert into salespeople values(&snum,&sname,&city)
+new   1: insert into salespeople values(101,Peel,London)
+insert into salespeople values(101,Peel,London)
+                                        *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> select * from salespeople;
+
+no rows selected
+
+SQL> insert into salespeople values(1001,'Peel','London');
+
+1 row created.
+
+SQL> insert into salespeople values(&snum,&sname,&city);
+Enter value for snum: 1002
+Enter value for sname: 'Serres'
+Enter value for city: 'San Jose'
+old   1: insert into salespeople values(&snum,&sname,&city)
+new   1: insert into salespeople values(1002,'Serres','San Jose')
+
+1 row created.
+
+SQL> Select * from Salespeople;
+
+      SNUM SNAME                CITY
+---------- -------------------- --------------------
+      1001 Peel                 London
+      1002 Serres               San Jose
+
+SQL> insert into salespeople values(&snum,&sname,&city);
+Enter value for snum: 1003
+Enter value for sname: 'motika'
+Enter value for city: 'london'
+old   1: insert into salespeople values(&snum,&sname,&city)
+new   1: insert into salespeople values(1003,'motika','london')
+
+1 row created.
+
+SQL> Select*from Salespeople;
+
+      SNUM SNAME                CITY
+---------- -------------------- --------------------
+      1001 Peel                 London
+      1002 Serres               San Jose
+      1003 motika               london
+
+SQL> insert into salespeople values(&snum,&sname,&city)
+  2  ;
+Enter value for snum: 1004
+Enter value for sname: 'Motika'
+Enter value for city: 'London'
+old   1: insert into salespeople values(&snum,&sname,&city)
+new   1: insert into salespeople values(1004,'Motika','London')
+
+1 row created.
+
+SQL> select * from salespeople;
+
+      SNUM SNAME                CITY
+---------- -------------------- --------------------
+      1001 Peel                 London
+      1002 Serres               San Jose
+      1003 motika               london
+      1004 Motika               London
+
+SQL> delete from salespeople where snum=104;
+
+0 rows deleted.
+
+SQL> delete from salespeople where snum=1004;
+
+1 row deleted.
+
+SQL> update salespeople set snum=1004 where sname='Motika';
+
+0 rows updated.
+
+SQL> update salespeople set snum=1004 where sname='motika';
+
+1 row updated.
+
+SQL> select * from salespeople;
+
+      SNUM SNAME                CITY
+---------- -------------------- --------------------
+      1001 Peel                 London
+      1002 Serres               San Jose
+      1004 motika               london
+
+SQL> insert into salespeople values(&snum,&sname,&city)
+  2
+SQL>
+SQL> alter salespeople add (COMM number);
+alter salespeople add (COMM number)
+      *
+ERROR at line 1:
+ORA-00940: invalid ALTER command
+
+
+SQL> alter salespeople add column COMM number;
+alter salespeople add column COMM number
+      *
+ERROR at line 1:
+ORA-00940: invalid ALTER command
+
+
+SQL> alter table salespeople add column (COMM number);
+alter table salespeople add column (COMM number)
+                            *
+ERROR at line 1:
+ORA-00904: : invalid identifier
+
+
+SQL> alter table salespeople add (COMM number);
+
+Table altered.
+
+SQL> desc salespeople;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNUM                                               NUMBER
+ SNAME                                              VARCHAR2(20)
+ CITY                                               VARCHAR2(20)
+ COMM                                               NUMBER
+
+SQL> update salespeople set comm=.12 where snum=1001;
+
+1 row updated.
+
+SQL> update salespeople set comm=.13 where snum=1002;
+
+1 row updated.
+
+SQL> update salespeople set comm=.11 where snum=1004;
+
+1 row updated.
+
+SQL> select * from salespeople;
+
+      SNUM SNAME                CITY                       COMM
+---------- -------------------- -------------------- ----------
+      1001 Peel                 London                      .12
+      1002 Serres               San Jose                    .13
+      1004 motika               london                      .11
+
+SQL> insert into salespeople values(&snum,&sname,&city)
+  2  ;
+Enter value for snum: 1007
+Enter value for sname: Rifkin
+Enter value for city: Barcelona
+old   1: insert into salespeople values(&snum,&sname,&city)
+new   1: insert into salespeople values(1007,Rifkin,Barcelona)
+insert into salespeople values(1007,Rifkin,Barcelona)
+            *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> insert into salespeople values(&snum,&sname,&city);
+Enter value for snum: 1007
+Enter value for sname: 'Rifkin'
+Enter value for city: 'Barcelona'
+old   1: insert into salespeople values(&snum,&sname,&city)
+new   1: insert into salespeople values(1007,'Rifkin','Barcelona')
+insert into salespeople values(1007,'Rifkin','Barcelona')
+            *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> insert into salespeople values(&snum,&sname,&city,&comm);
+Enter value for snum: 1007
+Enter value for sname: 'Rifkin'
+Enter value for city: 'Barcelona'
+Enter value for comm: .15
+old   1: insert into salespeople values(&snum,&sname,&city,&comm)
+new   1: insert into salespeople values(1007,'Rifkin','Barcelona',.15)
+
+1 row created.
+
+SQL> insert into salespeople values(&snum,&sname,&city,&comm);
+Enter value for snum: 1003
+Enter value for sname: 'AxelRod'
+Enter value for city: 'New York'
+Enter value for comm: .10
+old   1: insert into salespeople values(&snum,&sname,&city,&comm)
+new   1: insert into salespeople values(1003,'AxelRod','New York',.10)
+
+1 row created.
+
+SQL> insert into salespeople values(&snum,&sname,&city,&comm);
+Enter value for snum: 1005
+Enter value for sname: 'Fran'
+Enter value for city: 'London'
+Enter value for comm: .26
+old   1: insert into salespeople values(&snum,&sname,&city,&comm)
+new   1: insert into salespeople values(1005,'Fran','London',.26)
+
+1 row created.
+
+SQL> select * from salespeople;
+
+      SNUM SNAME                CITY                       COMM
+---------- -------------------- -------------------- ----------
+      1001 Peel                 London                      .12
+      1002 Serres               San Jose                    .13
+      1004 motika               london                      .11
+      1007 Rifkin               Barcelona                   .15
+      1003 AxelRod              New York                     .1
+      1005 Fran                 London                      .26
+
+6 rows selected.
+
+SQL> desc salespeople;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SNUM                                               NUMBER
+ SNAME                                              VARCHAR2(20)
+ CITY                                               VARCHAR2(20)
+ COMM                                               NUMBER
+
+SQL>
+SQL> insert into salespeople values(&snum,&sname,&city,&comm);
+Enter value for snum:
+SQL> insert into salespeople values(&snum,&sname,&city,&comm);
