@@ -1,0 +1,136 @@
+
+
+SQL> select s.snum,s.sname,o.onum,o.odate,o.amt from salespeople s inner join orders o on s.snum=o.snum and o.onum IN(select onum from orders where amt IN(select amnt from( select odate,MAX(amt) as amnt from orders group by odate)));
+
+      SNUM SNAME                      ONUM ODATE            AMT
+---------- -------------------- ---------- --------- ----------
+      1003 AxelRod                    3009 04-OCT-96    1713.23
+      1001 Peel                       3008 05-OCT-96       4723
+      1002 Serres                     3005 03-OCT-96    5160.45
+      1001 Peel                       3011 06-OCT-96    9861.88
+
+SQL> select s.snum,s.sname,o.onum,o.odate,o.amt from salespeople s inner join orders o on s.snum=o.snum and o.onum IN(select onum from orders where amt IN(select amnt from( select odate,MAX(amt) as amnt from orders group by odate))) order by o.amt;
+
+      SNUM SNAME                      ONUM ODATE            AMT
+---------- -------------------- ---------- --------- ----------
+      1003 AxelRod                    3009 04-OCT-96    1713.23
+      1001 Peel                       3008 05-OCT-96       4723
+      1002 Serres                     3005 03-OCT-96    5160.45
+      1001 Peel                       3011 06-OCT-96    9861.88
+
+SQL> select s.snum,s.sname,o.onum,o.odate,o.amt from salespeople s inner join orders o on s.snum=o.snum and o.onum IN(select onum from orders where amt IN(select amnt from( select odate,MAX(amt) as amnt from orders group by odate))) order by o.amt desc;
+
+      SNUM SNAME                      ONUM ODATE            AMT
+---------- -------------------- ---------- --------- ----------
+      1001 Peel                       3011 06-OCT-96    9861.88
+      1002 Serres                     3005 03-OCT-96    5160.45
+      1001 Peel                       3008 05-OCT-96       4723
+      1003 AxelRod                    3009 04-OCT-96    1713.23
+
+SQL> select s.snum,s.sname,o.onum,o.odate,o.amt from salespeople s inner join orders o on s.snum=o.snum and o.onum IN(select onum from orders where amt IN(select amnt from( select odate,MAX(amt) as amnt from orders group by odate))) order by o.odate;
+
+      SNUM SNAME                      ONUM ODATE            AMT
+---------- -------------------- ---------- --------- ----------
+      1002 Serres                     3005 03-OCT-96    5160.45
+      1003 AxelRod                    3009 04-OCT-96    1713.23
+      1001 Peel                       3008 05-OCT-96       4723
+      1001 Peel                       3011 06-OCT-96    9861.88
+
+SQL> select s.snum,s.sname,o.onum,o.odate,o.amt from salespeople s inner join orders o on s.snum=o.snum and o.onum IN(select onum from orders where amt IN(select amnt from( select odate,MAX(amt) as amnt from orders group by odate))) order by o.snum;
+
+      SNUM SNAME                      ONUM ODATE            AMT
+---------- -------------------- ---------- --------- ----------
+      1001 Peel                       3011 06-OCT-96    9861.88
+      1001 Peel                       3008 05-OCT-96       4723
+      1002 Serres                     3005 03-OCT-96    5160.45
+      1003 AxelRod                    3009 04-OCT-96    1713.23
+
+SQL> select s.snum,s.sname,o.onum,o.odate,o.amt from salespeople s inner join orders o on s.snum=o.snum and o.onum IN(select onum from orders where amt IN(select amnt from( select odate,MAX(amt) as amnt from orders group by odate))) order by o.snum;
+
+      SNUM SNAME                      ONUM ODATE            AMT
+---------- -------------------- ---------- --------- ----------
+      1001 Peel                       3011 06-OCT-96    9861.88
+      1001 Peel                       3008 05-OCT-96       4723
+      1002 Serres                     3005 03-OCT-96    5160.45
+      1003 AxelRod                    3009 04-OCT-96    1713.23
+
+SQL> select dsec cnum from orders;
+select dsec cnum from orders
+       *
+ERROR at line 1:
+ORA-00904: "DSEC": invalid identifier
+
+
+SQL> select * desc cnum from orders;
+select * desc cnum from orders
+         *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select * from orders order by  cnum desc;
+
+      ONUM        AMT ODATE           CNUM       SNUM
+---------- ---------- --------- ---------- ----------
+      3001      18.69 03-OCT-96       2008       1007
+      3006    1098.16 03-OCT-96       2008       1007
+      3002     1900.1 03-OCT-96       2007       1004
+      3011    9861.88 06-OCT-96       2006       1001
+      3008       4723 05-OCT-96       2006       1001
+      3010    1309.95 06-OCT-96       2004       1002
+      3005    5160.45 03-OCT-96       2003       1002
+      3009    1713.23 04-OCT-96       2002       1003
+      3007      75.75 04-OCT-96       2002       1003
+      3003     767.19 03-OCT-96       2001       1001
+
+10 rows selected.
+
+SQL> select * from salespeople where snum IN(select snum from orders);
+
+      SNUM SNAME                CITY                       COMM
+---------- -------------------- -------------------- ----------
+      1007 Rifkin               Barcelona                   .15
+      1001 Peel                 London                      .12
+      1004 motika               london                      .11
+      1002 Serres               San Jose                    .13
+      1003 AxelRod              New York                     .1
+
+SQL> select * from customers;
+
+      CNUM CNAME                CITY                     RATING       SNUM
+---------- -------------------- -------------------- ---------- ----------
+      2001 Hoffman              london                      100       1001
+      2002 Giovanni             Rome                        200       1003
+      2003 liu                  San Jose                    200       1002
+      2004 Grass                Berlin                      300       1002
+      2006 Clemens              London                      100       1001
+      2008 Cisneros             San Jose                    300       1007
+      2007 Pereira              Rome                        100       1004
+
+7 rows selected.
+
+SQL> select * from salespeople where snum IN(select snum from customers);
+
+      SNUM SNAME                CITY                       COMM
+---------- -------------------- -------------------- ----------
+      1001 Peel                 London                      .12
+      1003 AxelRod              New York                     .1
+      1002 Serres               San Jose                    .13
+      1007 Rifkin               Barcelona                   .15
+      1004 motika               london                      .11
+
+SQL> select * from salespeople where snum IN(select snum from(select snum,count(cnum) as cnt from customers group by snum having cnt>1));
+select * from salespeople where snum IN(select snum from(select snum,count(cnum) as cnt from customers group by snum having cnt>1))
+                                                                                                                            *
+ERROR at line 1:
+ORA-00904: "CNT": invalid identifier
+
+
+SQL> select * from salespeople where snum IN(select snum from(select snum,count(cnum) as cnt from customers group by snum having count(cnum)>1));
+
+      SNUM SNAME                CITY                       COMM
+---------- -------------------- -------------------- ----------
+      1001 Peel                 London                      .12
+      1002 Serres               San Jose                    .13
+
+SQL> select * from salespeople where snum IN(select snum from(select snum,count(cnum) as cnt from customers group by snum having count(cnum)>1))
